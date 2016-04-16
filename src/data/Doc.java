@@ -1,16 +1,7 @@
 package data;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
@@ -22,39 +13,40 @@ public class Doc {
 	 * Fields
 	 */
 	private String name;
-	private String filePath;
+	//private String filePath;
 	private List<StringBuilder> content;
-	private String timeStamp;
+	//private String timeStamp;
 	private String stylesheet;
-	private String styleFilePath;
+	//private String styleFilePath;
 	private int length;
 	
 	/*
 	 * Constructor
 	 */
 	public Doc() {
-		this("","",new ArrayList<StringBuilder>(), "", "", "");
+		this("",new ArrayList<StringBuilder>(), "");
 	}
-	public Doc (String name, String filePath, List<StringBuilder> content, String timeStamp, 
-			String stylesheet, String styleFilePath) {
+	public Doc (String name, List<StringBuilder> content, String stylesheet) {
 		this.name = name;
-		this.filePath = filePath;
+		//this.filePath = filePath;
 		this.content = content;
-		this.timeStamp = timeStamp;
+//		this.timeStamp = timeStamp;
 		this.stylesheet = stylesheet;
-		this.styleFilePath = styleFilePath;
+//		this.styleFilePath = styleFilePath;
+		this.setLength();
 	}
 	public Doc (Doc feeder) {
 		this.name = feeder.getName();
-		this.filePath = feeder.getFilePath();
+//		this.filePath = feeder.getFilePath();
 		this.content = new ArrayList<StringBuilder>();
 		for (StringBuilder sb : feeder.getContent()) {
 			StringBuilder addition = new StringBuilder(sb);
 			this.content.add(addition);
 		}
-		this.timeStamp = feeder.getTimeStamp();
+//		this.timeStamp = feeder.getTimeStamp();
 		this.stylesheet = feeder.getStylesheet();
-		this.styleFilePath = feeder.getStyleFilePath();
+//		this.styleFilePath = feeder.getStyleFilePath();
+		this.setLength();
 	}
 	
 	/*
@@ -73,6 +65,15 @@ public class Doc {
 //	public void wrapSpan (StringBuilder s) {
 //		content.add(s.insert(0, "<sp>").append("</sp>"));
 //	}
+	public void highLight (StringBuilder s, String color) {
+		int index = s.indexOf(">");
+		if (index > 0) {
+			s.insert(index, "style=\"background-color:" + color + "\">");
+		}
+		else s.insert(0,  "<sp style=\"background-color:" + color + "\">").append("</sp>");
+		content.add(s);
+		setLength();
+	}
 	public void wrapHtmlComment (StringBuilder s) {
 		content.add(s.insert(0, "<!-- ").append("-->"));
 		setLength();
@@ -107,15 +108,13 @@ public class Doc {
 			out.append(getBlock(i));
 			toRemove.add(getBlock(i));
 		}
-//		for (int i : index) {
-//			content.remove(i);
-//		}
 		content.removeAll(toRemove);
 		setLength();
 		return out;
 	}
 	public void addBlock (StringBuilder s, int index) {
 		content.add(index, s);
+		setLength();
 	}
 	public void clearAll () {
 		content.clear();
@@ -126,43 +125,12 @@ public class Doc {
 				"<link href='https://fonts.googleapis.com/css?family=Schoolbell' rel='stylesheet' type='text/css'>" +
 				"<link href='https://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>"	+	
 				"<link rel=\"stylesheet\" type=\"text/css\" href=\"" + 
-				getStyleFilePath() + getStylesheet() + "\">" +
+				getStylesheet() + "\">" +
 		        "<title>Testing</title></head><body>"));
 		content.add(new StringBuilder("</body></html>"));
 		
 	}
-
-	public void readDoc() {
-		BufferedReader in = null;
-		try {
-			InputStream is = ac.getResource(getFilePath() + getName()).getInputStream();
-			in = new BufferedReader(new InputStreamReader(is));
-			String line;
-			while((line = in.readLine()) != null) {
-				content.add(new StringBuilder(line));
-			}
-			in.close();
-		}
-		catch (IOException e){
-			System.out.println(e.getMessage());
-			content.add(new StringBuilder("no such file"));
-		}
-		setLength();
-	}
-	public void writeDoc () {
-		File f = new File(ac.getServletContext().getRealPath("/") + getFilePath() + getName());
-		try{
-			FileWriter fw = new FileWriter(f);
-			PrintWriter pw = new PrintWriter(fw);
-			for (StringBuilder line : content) {
-				pw.println(line.toString());
-			}
-			pw.close();
-		}
-		catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-	}
+	
 	/*
 	 * Gets and Sets
 	 */
@@ -174,14 +142,6 @@ public class Doc {
 		this.name = name;
 	}
 
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
 	public List<StringBuilder> getContent() {
 		return content;
 	}
@@ -190,28 +150,12 @@ public class Doc {
 		this.content = content;
 	}
 
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-
 	public String getStylesheet() {
 		return stylesheet;
 	}
 
 	public void setStylesheet(String stylesheet) {
 		this.stylesheet = stylesheet;
-	}
-
-	public String getStyleFilePath() {
-		return styleFilePath;
-	}
-
-	public void setStyleFilePath(String styleFilePath) {
-		this.styleFilePath = styleFilePath;
 	}
 	public int getLength() {
 		return length;

@@ -66,8 +66,21 @@ public class DocController {
 		case "txt":
 			doc.addText(snippet);
 			break;
-		case "p": case "h1": case "h2": case "h3": case "h4": case "h5": case "h6":
+		case "p": case "h1": case "h2": case "h3": case "h4": case "h5": case "h6": case "li":
+		case "ul": case "ol":
 			doc.wrapTag(snippet, tag);
+			break;
+		case "Y":
+			doc.highLight(snippet, "yellow");
+			break;
+		case "P":
+			doc.highLight(snippet, "#ffaacc");
+			break;
+		case "B":
+			doc.highLight(snippet, "#66eeee");
+			break;
+		case "G":
+			doc.highLight(snippet, "#77ff88");
 			break;
 		case "comment":
 			doc.wrapHtmlComment(snippet);
@@ -97,7 +110,9 @@ public class DocController {
 	@RequestMapping(path="io.do")
 	public ModelAndView ioTransfer(@ModelAttribute("doc") Doc doc, 
 			String name, String chooseFile,
-			@RequestParam("iotransfer") String command) {
+			@RequestParam("iotransfer") String command,
+			@RequestParam(name="stylesheet", defaultValue="styles.css") String stylesheet) {
+		
 		ModelAndView mv = new ModelAndView();
 		if (command.equals("Open")) {
 			doc = new Doc(io.getDoc(chooseFile));
@@ -105,16 +120,24 @@ public class DocController {
 		else if (command.equals("Save")) {
 			Doc saveDoc = new Doc (doc);
 			saveDoc.setName(name);
+			saveDoc.setStylesheet(stylesheet);
 			io.addDoc(saveDoc);
+		}
+		else if (command.equals("write to file")) {
+			doc.setName(name);
+			io.writeDoc(doc);
+		}
+		else if (command.equals("read from file")) {
+			Doc fromFile = new Doc();
+			fromFile.setName(name);
+			fromFile.setStylesheet(stylesheet);
+			io.readDoc(fromFile);
+			io.addDoc(fromFile);
+			doc = fromFile;
+			mv.addObject("openFile", doc.getName());
 		}
 		mv.setViewName("editor.jsp");
 		mv.addObject("docs", io.getDocs());
-		for (Doc d : io.getDocs()) {
-			System.out.println(d.getName());
-			for (StringBuilder sb : d.getContent()) {
-				System.out.println(sb);
-			}
-		}
 		mv.addObject("doc", doc);
 		return mv;
 	}
