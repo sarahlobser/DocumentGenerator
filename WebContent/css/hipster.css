@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+body {
+    padding: 30px;
+}
+
+h1 {
+    background-color: black;
+    color: white;
+    text-align: center;
+	font-family: Rock Salt, serif;
+	font-size: 40px;
+    padding: 10px;
+}
+
+h2,h3 {
+    background-color: #cccccc;
+	font-family: Rock Salt, sans-serif;
+    padding: 20px;
+}
+
+h4,h5,h6 {
+    background-color: #cccccc;
+    font-family: Rock Salt, sans-serif;
+    padding: 20px;
+}
+
+p {
+	font-family: Ubuntu, sans-serif;
+	font-size: 17px;
+}
+
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word;
+    background-color: #eeeeff;
+    padding: 40px;
+    width: 50%;
+    margin-left: 100px;
+}

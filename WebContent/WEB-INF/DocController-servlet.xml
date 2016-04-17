@@ -10,4 +10,5 @@
 
 	<context:component-scan base-package="controllers"/>
     <bean id="beanId" class="data.HtmlDocIO"></bean>
+    <bean id="stylesId" class="data.StyleDAO"></bean>
 </beans>

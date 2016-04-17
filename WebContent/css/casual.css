@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+body {
+    padding: 30px;
+}
+
+h1 {
+    background-color: #ee7777;
+    text-align: center;
+	font-family: Londrina Sketch, serif;
+	font-size: 70px;
+    padding: 10px;
+}
+
+h2,h3 {
+    background-color: #ee7777;
+	font-family: Nothing You Could Do, sans-serif;
+    padding: 20px;
+}
+
+h4,h5,h6 {
+    background-color: #ee7777;
+    font-family: Nothing You Could Do, sans-serif;
+    padding: 20px;
+}
+
+p {
+	font-family: Nothing You Could Do, sans-serif;
+	font-size: 17px;
+	color: #881111;
+}
+
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word;
+    background-color: #ffcccc;
+    padding: 40px;
+    width: 50%;
+    margin-left: 100px;
+}

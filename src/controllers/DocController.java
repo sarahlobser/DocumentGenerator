@@ -12,12 +12,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import data.Doc;
 import data.DocIO;
+import data.Style;
+import data.StyleDAO;
 
 @Controller
 @SessionAttributes("doc")
 public class DocController {
 	@Autowired
 	private DocIO io;
+	@Autowired
+	private StyleDAO styles;
 	
 	@ModelAttribute("doc")
 	public Doc initDoc() {
@@ -31,30 +35,9 @@ public class DocController {
 		doc.setName("firstdoc.html");
 		mv.addObject("doc", doc);
 		mv.addObject("docs", io.getDocs());
+		mv.addObject("styles", styles.getAllStyles());
 		return mv;
 	}
-//	@RequestMapping(path="edit.do", method=RequestMethod.POST)
-//	public ModelAndView editDoc(String fileName) {
-//		ModelAndView mv = new ModelAndView();
-//		mv.setViewName("editor.jsp");
-//		mv.addObject("doc", io.getDoc(fileName));
-//		return mv;
-//	}
-//	@RequestMapping(path="io.do", method=RequestMethod.GET)
-//	public ModelAndView makeDoc() {
-//		// Prime the model with an empty document object so that
-//		// the form can populate it with values
-//		Doc doc = new Doc();
-//		return new ModelAndView("editor.jsp", "doc", doc);
-//	}
-//	
-//	@RequestMapping(path="createDoc.do", method=RequestMethod.POST)
-//	public String addDoc(Doc doc) {
-//		io.addDoc(doc);
-//		// book command object is already stored in the request
-//		// no need to add it to the ModelAndView again
-//		return "editor.jsp";
-//	}
 	
 	@RequestMapping(path="edit.do", method=RequestMethod.POST)
 	public ModelAndView addSnippet(StringBuilder snippet, 
@@ -104,6 +87,7 @@ public class DocController {
 			break;
 		}
 		mv.addObject("docs", io.getDocs());
+		mv.addObject("styles", styles.getAllStyles());
 		return mv;
 	}
 	
@@ -111,7 +95,7 @@ public class DocController {
 	public ModelAndView ioTransfer(@ModelAttribute("doc") Doc doc, 
 			String name, String chooseFile,
 			@RequestParam("iotransfer") String command,
-			@RequestParam(name="stylesheet", defaultValue="styles.css") String stylesheet) {
+			@RequestParam(name="styleOptions") String styleName) {
 		
 		ModelAndView mv = new ModelAndView();
 		if (command.equals("Open")) {
@@ -120,17 +104,18 @@ public class DocController {
 		else if (command.equals("Save")) {
 			Doc saveDoc = new Doc (doc);
 			saveDoc.setName(name);
-			saveDoc.setStylesheet(stylesheet);
+			saveDoc.setStyle(styles.getStyle(styleName));
 			io.addDoc(saveDoc);
 		}
 		else if (command.equals("write to file")) {
 			doc.setName(name);
+			doc.setStyle(styles.getStyle(styleName));
 			io.writeDoc(doc);
 		}
 		else if (command.equals("read from file")) {
 			Doc fromFile = new Doc();
 			fromFile.setName(name);
-			fromFile.setStylesheet(stylesheet);
+			fromFile.setStyle(styles.getStyle(styleName));
 			io.readDoc(fromFile);
 			io.addDoc(fromFile);
 			doc = fromFile;
@@ -138,9 +123,9 @@ public class DocController {
 		}
 		mv.setViewName("editor.jsp");
 		mv.addObject("docs", io.getDocs());
+		mv.addObject("styles", styles.getAllStyles());
 		mv.addObject("doc", doc);
 		return mv;
 	}
-
 
 }

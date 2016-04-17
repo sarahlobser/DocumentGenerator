@@ -16,7 +16,7 @@ public class Doc {
 	//private String filePath;
 	private List<StringBuilder> content;
 	//private String timeStamp;
-	private String stylesheet;
+	private Style style;
 	//private String styleFilePath;
 	private int length;
 	
@@ -24,28 +24,22 @@ public class Doc {
 	 * Constructor
 	 */
 	public Doc() {
-		this("",new ArrayList<StringBuilder>(), "");
+		this("",new ArrayList<StringBuilder>(), new Style());
 	}
-	public Doc (String name, List<StringBuilder> content, String stylesheet) {
+	public Doc (String name, List<StringBuilder> content, Style style) {
 		this.name = name;
-		//this.filePath = filePath;
 		this.content = content;
-//		this.timeStamp = timeStamp;
-		this.stylesheet = stylesheet;
-//		this.styleFilePath = styleFilePath;
+		this.style = style;
 		this.setLength();
 	}
 	public Doc (Doc feeder) {
 		this.name = feeder.getName();
-//		this.filePath = feeder.getFilePath();
 		this.content = new ArrayList<StringBuilder>();
 		for (StringBuilder sb : feeder.getContent()) {
 			StringBuilder addition = new StringBuilder(sb);
 			this.content.add(addition);
 		}
-//		this.timeStamp = feeder.getTimeStamp();
-		this.stylesheet = feeder.getStylesheet();
-//		this.styleFilePath = feeder.getStyleFilePath();
+		this.style = feeder.getStyle();
 		this.setLength();
 	}
 	
@@ -62,13 +56,10 @@ public class Doc {
 		content.add(s.insert(0, openTag).append(closeTag));
 		setLength();
 	}
-//	public void wrapSpan (StringBuilder s) {
-//		content.add(s.insert(0, "<sp>").append("</sp>"));
-//	}
 	public void highLight (StringBuilder s, String color) {
 		int index = s.indexOf(">");
 		if (index > 0) {
-			s.insert(index, "style=\"background-color:" + color + "\">");
+			s.insert(index, " style=\"background-color:" + color + "\"");
 		}
 		else s.insert(0,  "<sp style=\"background-color:" + color + "\">").append("</sp>");
 		content.add(s);
@@ -92,8 +83,6 @@ public class Doc {
 	}
 	public StringBuilder getBlock (int index) {
 		StringBuilder out = content.get(index);
-		//content.remove(out);
-		//setLength();
 		return out;
 	}
 	public StringBuilder getBlock (String indexString) {
@@ -122,11 +111,10 @@ public class Doc {
 	}
 	public void wrapHtmlFileBody () {
 		content.add(0,new StringBuilder("<!DOCTYPE html><html><head>" + 
-				"<link href='https://fonts.googleapis.com/css?family=Schoolbell' rel='stylesheet' type='text/css'>" +
-				"<link href='https://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>"	+	
-				"<link rel=\"stylesheet\" type=\"text/css\" href=\"" + 
-				getStylesheet() + "\">" +
-		        "<title>Testing</title></head><body>"));
+			style.getFontUrl() + 
+			"<link rel=\"stylesheet\" type=\"text/css\" href=\"" + 
+			style.getFileName() + 
+			"\"> <title>DocGen</title></head><body>"));
 		content.add(new StringBuilder("</body></html>"));
 		
 	}
@@ -150,12 +138,12 @@ public class Doc {
 		this.content = content;
 	}
 
-	public String getStylesheet() {
-		return stylesheet;
+	public Style getStyle() {
+		return style;
 	}
 
-	public void setStylesheet(String stylesheet) {
-		this.stylesheet = stylesheet;
+	public void setStyle(Style style) {
+		this.style = style;
 	}
 	public int getLength() {
 		return length;
@@ -163,8 +151,5 @@ public class Doc {
 	public void setLength() {
 		this.length = content.size();
 	}
-	
-	
-	
 
 }

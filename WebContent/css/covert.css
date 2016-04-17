@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+body {
+    padding: 30px;
+}
+
+h1 {
+    background-color: black;
+    color: white;
+    text-align: center;
+	font-family: Reenie Beanie, serif;
+	font-size: 60px;
+    padding: 30px;
+}
+
+h2,h3 {
+	font-family: Reenie Beanie, sans-serif;
+    background-color: #cceeff;
+    padding: 20px;
+}
+
+h4,h5,h6 {
+    font-family: Reenie Beanie, sans-serif;
+    padding: 20px;
+}
+
+p {
+	font-family: Cutive Mono, sans-serif;
+	font-size: 20px;
+	color: #444444;
+}
+
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word;
+    background-color: #eeeeee;
+    padding: 40px;
+    width: 50%;
+    margin-left: 100px;
+}

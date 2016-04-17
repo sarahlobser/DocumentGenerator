@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+body {
+    padding: 30px;
+}
+
+h1 {
+    background-color: #ffaadd;
+    text-align: center;
+	font-family: Walter Turncoat, serif;
+	font-size: 40px;
+    padding: 30px;
+}
+
+h2,h3 {
+	font-family: Walter Turncoat, sans-serif;
+    background-color: #ffeeee;
+    padding: 20px;
+}
+
+h4,h5,h6 {
+    font-family: Walter Turncoat, sans-serif;
+    padding: 20px;
+}
+
+p {
+	font-family: Playfair Display, sans-serif;
+	font-size: 20px;
+	color: #cc7777;
+}
+
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word;
+    background-color: #ffffee;
+    padding: 40px;
+    width: 50%;
+}

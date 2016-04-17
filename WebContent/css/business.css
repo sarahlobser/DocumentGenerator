@@ -1,0 +1,46 @@
+@CHARSET "UTF-8";
+body {
+    padding: 30px;
+}
+
+h1 {
+    background-color: black;
+    color: white;
+    text-align: center;
+	font-family: Unica One, serif;
+	font-size: 60px;
+    padding: 30px;
+}
+
+h2,h3 {
+    background-color: #777777;
+    color: #eeeeee;
+	font-family: Unica One, sans-serif;
+    padding: 20px;
+}
+
+h4,h5,h6 {
+    background-color: #999999;
+    color: #eeeeee;
+    font-family: Unica One, sans-serif;
+    padding: 20px;
+}
+
+p {
+	font-family: Averia Serif Libre, sans-serif;
+	font-size: 17px;
+	color: #555555;
+}
+
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word;
+    background-color: #eeeeee;
+    color: #6666aa;
+    padding: 40px;
+    width: 50%;
+    margin-left: 100px;
+}

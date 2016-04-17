@@ -1,0 +1,31 @@
+.left {
+	margin:0px;
+	width: 60%;
+	display: inline;
+}
+
+.right {
+	background-color: black;
+	position: fixed;
+	top: 0;
+	right: 0;
+	margin: 0px;
+	width: 40%;
+	height: 100%;
+	display: inline;
+	text-align: center;
+}
+form {
+    display: inline;
+}
+select {
+    display: inline;
+}
+.editor {
+    width: 400px;
+    height: 300px;
+}
+
+.create {
+    
+}

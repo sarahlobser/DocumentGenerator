@@ -4,10 +4,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link href='https://fonts.googleapis.com/css?family=Schoolbell' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	${doc.style.fontUrl}
+    <link rel="stylesheet" type="text/css" href="${doc.style.fileName}">
 <title>Editor</title>
 </head>
 <body>
@@ -15,16 +13,12 @@
 	<c:forEach var="line" items="${doc.content}">
 	${line}
 	</c:forEach>
-	<%-- <p>${doc.content}</p> --%>
 	<form action="edit.do" method="POST" id="editForm">
-			<%-- <input type="text" name="name" value="${doc.name}"> --%>
-            <!-- <input type ="submit" name="tag" value="last"> -->
             <input type ="submit" name="tag" value="clear">
             <input type ="text" name="insertIndex" value="${doc.length-1}" size="3">
             <input type ="submit" name="tag" value="add">
             <input type ="text" name="grabIndex" value="${doc.length-1}" size="3">
             <input type ="submit" name="tag" value="grab"><br>
-            <!-- <input type="submit" name="tag" value="txt"> -->
             
             <input type="submit" name="tag" value="p">
             <input type="submit" name="tag" value="h1">
@@ -64,9 +58,12 @@
     		<option value="${file.name}">${file.name}</option>
     	</c:forEach>
     </select>
-        
-    <input type="text" name="stylesheet" value="${doc.stylesheet}" size="15">
     	
+    <select name="styleOptions" form="ioForm">
+    	<c:forEach var="style" items="${styles}">
+    		<option value="${style.name}">${style.name}</option>
+    	</c:forEach>
+    </select>
     </form>
     
     <textarea rows="20" cols="100" name="htmlOutput" >
@@ -76,7 +73,7 @@
     </textarea>
 </div>
 <div>
-<iframe src="http://localhost:8080/DocGen/output/${openFile}" style="width: 100%; height: 600px"></iframe>
+<iframe src="http://localhost:8080/DocGen/${openFile}" style="width: 100%; height: 600px"></iframe>
 </div>    
 </body>
 </html>
