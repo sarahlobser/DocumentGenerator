@@ -13,11 +13,8 @@ public class Doc {
 	 * Fields
 	 */
 	private String name;
-	//private String filePath;
 	private List<StringBuilder> content;
-	//private String timeStamp;
 	private Style style;
-	//private String styleFilePath;
 	private int length;
 	
 	/*

@@ -9,4 +9,5 @@ public interface DocIO {
 	public void addDoc (Doc doc);
 	public void writeDoc (Doc doc);
 	public void readDoc (Doc doc);
+	public boolean deleteDoc (Doc doc);
 }

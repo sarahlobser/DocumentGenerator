@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 //import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import data.Doc;
 import data.DocIO;
-import data.Style;
 import data.StyleDAO;
 
 @Controller
@@ -22,6 +24,7 @@ public class DocController {
 	private DocIO io;
 	@Autowired
 	private StyleDAO styles;
+	private Set<String> writtenHistory = new TreeSet<>();
 	
 	@ModelAttribute("doc")
 	public Doc initDoc() {
@@ -36,6 +39,8 @@ public class DocController {
 		mv.addObject("doc", doc);
 		mv.addObject("docs", io.getDocs());
 		mv.addObject("styles", styles.getAllStyles());
+		mv.addObject("writtenHistory", writtenHistory);
+
 		return mv;
 	}
 	
@@ -88,9 +93,12 @@ public class DocController {
 		}
 		mv.addObject("docs", io.getDocs());
 		mv.addObject("styles", styles.getAllStyles());
+		mv.addObject("writtenHistory", writtenHistory);
+
 		return mv;
 	}
 	
+
 	@RequestMapping(path="io.do")
 	public ModelAndView ioTransfer(@ModelAttribute("doc") Doc doc, 
 			String name, String chooseFile,
@@ -106,13 +114,19 @@ public class DocController {
 			saveDoc.setName(name);
 			saveDoc.setStyle(styles.getStyle(styleName));
 			io.addDoc(saveDoc);
+			doc = saveDoc;
 		}
-		else if (command.equals("write to file")) {
+		else if (command.equals("Delete")) {
+			io.deleteDoc(doc);
+			doc = new Doc();
+		}
+		else if (command.equals("Write")) {
 			doc.setName(name);
 			doc.setStyle(styles.getStyle(styleName));
 			io.writeDoc(doc);
+			writtenHistory.add(name);
 		}
-		else if (command.equals("read from file")) {
+		else if (command.equals("Read")) {
 			Doc fromFile = new Doc();
 			fromFile.setName(name);
 			fromFile.setStyle(styles.getStyle(styleName));
@@ -121,10 +135,14 @@ public class DocController {
 			doc = fromFile;
 			mv.addObject("openFile", doc.getName());
 		}
+		else if (command.equals("Clear")) {
+			io.getDocs().clear();
+		}
 		mv.setViewName("editor.jsp");
 		mv.addObject("docs", io.getDocs());
 		mv.addObject("styles", styles.getAllStyles());
 		mv.addObject("doc", doc);
+		mv.addObject("writtenHistory", writtenHistory);
 		return mv;
 	}
 

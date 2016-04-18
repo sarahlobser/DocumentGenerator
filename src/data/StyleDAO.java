@@ -20,8 +20,6 @@ public class StyleDAO {
 
 	@PostConstruct
 	public void init() {
-		// Retrieve an input stream from the application context
-		// rather than directly from the file system
 		try (InputStream is = ac.getResource(FILE_NAME).getInputStream();
 				BufferedReader buf = new BufferedReader(new InputStreamReader(is));) {
 			String line = buf.readLine();

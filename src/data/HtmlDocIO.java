@@ -12,10 +12,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
-/*
- * Below is the location where files are written to and read from, when the project is run locally.
- */
-//~/Users/sarahlobser/SD/Java/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/CRUD/output
+
 public class HtmlDocIO implements DocIO {
 	@Autowired
 	WebApplicationContext ac;
@@ -59,6 +56,22 @@ public class HtmlDocIO implements DocIO {
 		if (contains) docs.set(matchIndex, doc);
 		else docs.add(0, doc);
 	}
+	
+	@Override
+	public boolean deleteDoc(Doc doc) {
+		boolean success = false;
+		int index = -1;
+		for (Doc d : docs) {
+			if (d.getName().equals(doc.getName())) {
+				index = docs.indexOf(d);
+				success = true;
+				break;
+			}
+		}
+		if (index >= 0) docs.remove(index);
+		return success;
+		
+	}
 	public void writeDoc (Doc d) {
 		File f = new File(ac.getServletContext().getRealPath("/") + d.getName());
 		try{
@@ -66,7 +79,7 @@ public class HtmlDocIO implements DocIO {
 			PrintWriter pw = new PrintWriter(fw);
 			d.wrapHtmlFileBody();
 			for (StringBuilder line : d.getContent()) {
-				pw.print(line.toString());
+				pw.print(line.toString() + "\n");
 			}
 			pw.close();
 		}
